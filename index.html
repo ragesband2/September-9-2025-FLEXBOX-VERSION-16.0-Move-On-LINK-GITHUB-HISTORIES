@@ -1,0 +1,309 @@
+<html lang="tl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Background + Neon Boxes with Animated Background and Borders</title>
+<style>
+  /* Body setup */
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    position: relative;
+  }
+  /* Background Image Animation */
+  .background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('1.jpeg'); /* Initial image, can be changed dynamically */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: opacity 1s ease;
+    opacity: 1;
+    z-index: 0; /* Underneath overlays and content */
+  }
+  /* Gradient overlay for color effect */
+  .gradient-overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(255, 0, 255, 0.4);
+    animation: bodyGradient 10s infinite linear;
+    z-index: 1;
+  }
+  /* Neon border with animated rainbow gradient */
+  .border {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    box-sizing: border-box;
+    border: 10px solid transparent;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(45deg, magenta, deeppink, red, purple);
+    border-image-repeat: stretch;
+    margin: 0;
+    animation: borderPulse 10s infinite linear;
+    z-index: 2;
+  }
+  /* Animations for background gradient overlay */
+  @keyframes bodyGradient {
+    0% { background: rgba(255, 0, 255, 0.4); }
+    8.33% { background: rgba(255, 127, 0, 0.4); }
+    16.66% { background: rgba(255, 255, 0, 0.4); }
+    25% { background: rgba(127, 255, 0, 0.4); }
+    33.33% { background: rgba(0, 255, 127, 0.4); }
+    41.66% { background: rgba(0, 255, 255, 0.4); }
+    50% { background: rgba(0, 127, 255, 0.4); }
+    58.33% { background: rgba(0, 0, 255, 0.4); }
+    66.66% { background: rgba(127, 0, 255, 0.4); }
+    75% { background: rgba(255, 0, 255, 0.4); }
+    83.33% { background: rgba(255, 0, 127, 0.4); }
+    91.66% { background: rgba(255, 127, 0, 0.4); }
+    100% { background: rgba(255, 0, 255, 0.4); }
+  }
+  /* Animations for border pulse rainbow */
+  @keyframes borderPulse {
+    0% { border-color: rgba(255, 0, 255, 0.8); }
+    8.33% { border-color: rgba(255, 127, 0, 0.8); }
+    16.66% { border-color: rgba(255, 255, 0, 0.8); }
+    25% { border-color: rgba(127, 255, 0, 0.8); }
+    33.33% { border-color: rgba(0, 255, 127, 0.8); }
+    41.66% { border-color: rgba(0, 255, 255, 0.8); }
+    50% { border-color: rgba(0, 127, 255, 0.8); }
+    58.33% { border-color: rgba(0, 0, 255, 0.8); }
+    66.66% { border-color: rgba(127, 0, 255, 0.8); }
+    75% { border-color: rgba(255, 0, 255, 0.8); }
+    83.33% { border-color: rgba(255, 0, 127, 0.8); }
+    91.66% { border-color: rgba(255, 127, 0, 0.8); }
+    100% { border-color: rgba(255, 0, 255, 0.8); }
+  }
+  /* Container for grid boxes, centered */
+  .grid-container {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    grid-template-columns: repeat(10, 80px);
+    grid-template-rows: repeat(5, 80px);
+    gap: 10px;
+    z-index: 3; /* Above borders and overlays */
+  }
+  /* Each neon blinking box */
+  .box {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    border: 3px solid transparent;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    position: relative;
+    animation: neonBlink 1s infinite alternate;
+    /* Neon glow with CSS variables */
+    box-shadow: inset 0 0 0 3px var(--neon-color, magenta), 0 0 10px var(--neon-color, magenta),
+                0 0 20px var(--neon-color, magenta), 0 0 30px var(--neon-color, magenta);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  /* Neon blinking animation */
+  @keyframes neonBlink {
+    0% {
+      text-shadow: 0 0 10px cyan, 0 0 20px cyan, 0 0 30px cyan, 0 0 40px cyan;
+      box-shadow: inset 0 0 0 3px var(--neon-color, magenta), 0 0 10px var(--neon-color, magenta),
+                  0 0 20px var(--neon-color, magenta), 0 0 30px var(--neon-color, magenta);
+    }
+    100% {
+      text-shadow: 0 0 20px magenta, 0 0 40px magenta, 0 0 60px magenta, 0 0 80px magenta;
+      box-shadow: inset 0 0 0 3px var(--neon-color, magenta), 0 0 20px var(--neon-color, magenta),
+                  0 0 40px var(--neon-color, magenta), 0 0 60px var(--neon-color, magenta);
+    }
+  }
+  /* Alternate neon colors for boxes: odd/even */
+  .box:nth-child(odd) {
+    --neon-color: magenta;
+  }
+  .box:nth-child(even) {
+    --neon-color: cyan;
+  }
+  /* Hover effect for neon glow */
+  .box:hover {
+    transform: scale(1.05);
+    box-shadow: inset 0 0 0 3px var(--neon-color), 0 0 20px var(--neon-color), 0 0 40px var(--neon-color), 0 0 60px var(--neon-color);
+  }
+  /* Modal styles for link display */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.4);
+  }
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 400px;
+    position: relative;
+  }
+  .close {
+    position: absolute;
+    top: 10px; right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .link-button {
+    display: inline-block;
+    background-color: blue;
+    color: #fff;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+  }
+  .link-button:hover {
+    background-color: darkblue;
+  }
+</style>
+</head>
+<body>
+  <!-- Background image layer -->
+  <div class="background"></div>
+  <!-- Gradient overlay with rainbow animation -->
+  <div class="gradient-overlay"></div>
+  <!-- Neon border with animated rainbow pulse -->
+  <div class="border"></div>
+  <!-- Grid of boxes -->
+  <div class="grid-container" id="grid"></div>
+  <!-- Modal for links -->
+  <div id="myModal" class="modal">
+    <div class="modal-content" id="modalContent">
+      <span class="close" onclick="closeDialog()">×</span>
+      <p>CLICK THIS LINK HERE:</p>
+      <a href="#" class="link-button" target="_blank"></a>
+    </div>
+  </div>
+
+<script>
+  // Background image slideshow setup
+  const background = document.querySelector('.background');
+  const totalImages = 14; // Adjust as needed
+  let imageIndex = 1; // Start with image 1
+  function changeImages() {
+    setInterval(() => {
+      // Fade out
+      background.style.transition = 'opacity 1s ease';
+      background.style.opacity = 0;
+      setTimeout(() => {
+        // Change the background image
+        background.style.backgroundImage = `url('${imageIndex}.png')`;
+        // Fade in again
+        background.style.opacity = 1;
+        // Increment and loop
+        imageIndex = (imageIndex % totalImages) + 1;
+      }, 1000);
+    }, 4000); // Change every 4 seconds
+  }
+  changeImages();
+  
+  // Links for Move On buttons 1-49
+  const links = [
+    "https://ragesband2.github.io/August-9-2025-Target-Shooting-Game---HUD-Encyclopedia/",
+    "https://ragesband2.github.io/August-9-2025-Move-On-Unlocked---Breakup-Recovery-Game/",
+    "https://ragesband2.github.io/August-9-2025-Move-On-Unlocked---Breakup-Recovery-Game-Finale/",
+    "https://ragesband2.github.io/August-9-2025-Parkour-Challenge---100-Levels-Game/",
+    "https://ragesband2.github.io/August-9-2025-Puzzle-Box-Game---100-Levels/",
+    "https://ragesband2.github.io/August-9-2025-Ultimate-Car-Racing-Game/",
+    "https://ragesband2.github.io/August-9-2025-Memory-Matching-3D---100-Levels-Game/",
+    "https://ragesband2.github.io/August-9-2025-UFO-Catcher-Game-HUD-Encyclopedia/",
+    "https://ragesband2.github.io/August-9-2025-Ball-Physics-Drop---Enhanced-Edition-Game/",
+    "https://ragesband2.github.io/August-9-2025-Fishing-Game-Adventure---100-Levels/",
+    "https://ragesband2.github.io/August-9-2025-Climbing-Adventure-Game-HUD-Design-Encyclopedia/",
+    "https://ragesband2.github.io/August-9-2025-Color-Match-Arena-Game/",
+    "https://ragesband2.github.io/August-10-2025-Paano-Magmove-On-Sa-Dalawang-Heartbreaks-Na-Ex-Monogamy-At-Ex-Bigamy/",
+    "https://ragesband2.github.io/August-10-2025-Polygamy-Rule-Of-Thirds/",
+    "https://ragesband2.github.io/August-10-2025-Sa-Starting-Day-Ng-Klase-Ko-Para-Sa-Ex-Ko/",
+    "https://ragesband2.github.io/August-10-2025-Sa-Starting-Day-Ng-Klase-Ko-Para-Sa-Ex-Ko-Background-Blinks/",
+    "https://ragesband2.github.io/August-10-2025-Polygamy-Rule-Of-Thirds-Background-Blinks/",
+    "https://ragesband2.github.io/August-10-2025-Move-On-2-Exes-Focus-Polygamy-Levothyroxine-Background-Blinks/",
+    "https://ragesband2.github.io/August-10-2025-Rules-Of-Relationship/",
+    "https://ragesband2.github.io/August-10-2025-Rules-Of-Relationship-Table-Background-Blinks/",
+    "https://ragesband2.github.io/August-10-2025-Relationship-Adventure-Game/",
+    "https://ragesband2.github.io/August-10-2025-Heartbreak-Survivor-Relationship-Recovery-Game/",
+    "https://ragesband2.github.io/August-10-2025-Thyroid-Battle-Space-Medic-Game/",
+    "https://ragesband2.github.io/August-10-2025-Obstacle-Course-Adventure-Game/",
+    "https://ragesband2.github.io/August-10-2025-Laser-Dodger---100-Levels-Challenge/",
+    "https://ragesband2.github.io/August-10-2025-Thyroid-Defender-Medical-HUD-Game/",
+    "https://ragesband2.github.io/August-10-2025-3D-Pong-Game---100-Levels/",
+    "https://ragesband2.github.io/August-11-2025-Platform-Timer-Race-Game/",
+    "https://ragesband2.github.io/August-11-2025-Bounce-Ball-Puzzle-Game/",
+    "https://ragesband2.github.io/August-11-2025-Stack-Builder---100-Levels-Challenge-Game/",
+    "https://ragesband2.github.io/August-11-2025-Ghost-Chase---100-Levels-Game./",
+    "https://ragesband2.github.io/August-11-2025-Tunnel-Runner---100-Levels-Game/",
+    "https://ragesband2.github.io/August-11-2025-Lava-Escape---100-Levels-Adventure-Game/",
+    "https://ragesband2.github.io/August-17-2025-Portal-Puzzle-Game/",
+    "https://ragesband2.github.io/August-17-2025-Cannon-Aim-Game/",
+    "https://ragesband2.github.io/August-17-2025-Jetpack-Challenge-Game/",
+    "https://ragesband2.github.io/August-17-2025-Zipline-Adventure-Game/",
+    "https://ragesband2.github.io/August-17-2025-Mirror-Puzzle-Game/",
+    "https://ragesband2.github.io/August-17-2025-Flip-Tile-Game/",
+    "https://ragesband2.github.io/August-17-2025-Flip-Tile-Game-Finale/",
+    "https://ragesband2.github.io/August-17-2025-Shape-Sorter---100-Levels-Game/",
+    "https://ragesband2.github.io/August-17-2025-Stealth-Master---100-Levels-Game-/",
+    "https://ragesband2.github.io/August-17-2025-Stealth-Master-Game-Finale/",
+    "https://ragesband2.github.io/August-17-2025-AI-Chat-Adventure-Game/",
+    "https://ragesband2.github.io/August-17-2025-Self-Chat-AI-/",
+    "https://ragesband2.github.io/August-17-2025-AI-Chat-Adventure-Game-Finale/",
+    "https://ragesband2.github.io/August-17-2025-EX-VS-ZOMBIES-WARFARE-ZONES-Version-2.0-Game/",
+    "https://ragesband2.github.io/August-17-2025-EX-VS-ZOMBIES-WARFARE-ZONES-v10-Version-3.0-Game/",
+    "https://ragesband2.github.io/August-17-2025-EX-vs-Zombies-Warfare-Zones-Version-4.0-Game/"
+  ];
+  
+  const container = document.getElementById('grid');
+  for (let i=0; i<49; i++) {
+    const box = document.createElement('div');
+    box.className='box';
+    box.innerText='Move On '+(i+1);
+    // Assign click event to show modal
+    box.onclick=()=>showDialog(links[i] || '');
+    container.appendChild(box);
+  }
+  
+  // Show modal with link
+  function showDialog(link) {
+    const modal = document.getElementById('myModal');
+    const content = document.getElementById('modalContent');
+    modal.style.display='block';
+    content.innerHTML= `
+      <span class="close" onclick="closeDialog()">×</span>
+      <p>CLICK THIS LINK HERE:</p>
+      <a href="${link}" class="link-button" target="_blank">${link || 'No Link Available'}</a>
+    `;
+  }
+  
+  function closeDialog() {
+    document.getElementById('myModal').style.display='none';
+  }
+  
+  window.onclick= (e) => {
+    if(e.target===document.getElementById('myModal')){
+      closeDialog();
+    }
+  };
+</script>
+</body>
+</html>
